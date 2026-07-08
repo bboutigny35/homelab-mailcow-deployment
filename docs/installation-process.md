@@ -5,10 +5,12 @@ Ce guide détaille le déploiement complet d'un serveur de messagerie Mailcow su
 ## 📋 Prérequis
 
 * **Système d'exploitation :** Debian 11 ou 12 (installation minimale recommandée).
-* **Ressources matérielles :** Minimum 6 Go de RAM (8 Go recommandés si ClamAV est activé), 20 Go d'espace disque.
+* **Ressources matérielles :** Minimum 6 Go de RAM (8 Go recommandés si ClamAV est activé), 20 Go d'espace disque minimum (à adapter en fonction de vos besoin mais il ne faut pas ouvblier que vos mails et leurs pièces jointes seront stockés ici ce qui peut vite saturer l'espace dont vous disposez).
 * **Privilèges :** Accès `root` ou utilisateur avec les droits `sudo`.
 * **Réseau :** Une adresse IP publique fixe.
 * **DNS :** Un nom de domaine avec accès à la gestion de la zone DNS.
+
+**Note :** L'éditeur de texte utilisé dépend de vous, ici j'ai fait le choix de 'nano' car c'est le plus utilisé mais j'utilise 'vim' à titre personnel.
 
 ---
 
