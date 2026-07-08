@@ -16,42 +16,42 @@ Ce guide détaille le déploiement complet d'un serveur de messagerie Mailcow su
 
 1. **Mise à jour du système :**
 
-    sudo apt update && sudo apt upgrade -y
+        sudo apt update && sudo apt upgrade -y
 
 2. **Installation des dépendances essentielles :**
 
 **Note :** bind9-dnsutils fournit les outils dig et nslookup, indispensables pour le diagnostic réseau et la vérification des enregistrements DNS (SPF, DKIM, DMARC).
 
-    sudo apt install -y curl git ca-certificates software-properties-common nano bind9-dnsutils
+        sudo apt install -y curl git ca-certificates software-properties-common nano bind9-dnsutils
 
 3. **Configuration du nom d'hôte (Hostname) :**
 
 Définissez le FQDN (Fully Qualified Domain Name) de votre serveur mail.
 
-    sudo hostnamectl set-hostname mail.votre-domaine.com
+        sudo hostnamectl set-hostname mail.votre-domaine.com
 
 Éditez le fichier /etc/hosts pour y lier l'IP locale/publique du serveur :
 
-    sudo nano /etc/hosts
+        sudo nano /etc/hosts
 
 Ajoutez la ligne suivante (remplacez l'IP par celle de votre serveur) :
 
-    127.0.0.1 localhost
-    198.51.100.10 mail.votre-domaine.com mail
+        127.0.0.1 localhost
+        198.51.100.10 mail.votre-domaine.com mail
 
 4. **Préparation du routage réseau (IP Forwarding) :**
 
 Docker a besoin de router les paquets entre ses conteneurs et l'interface externe.
 
-    sudo nano /etc/sysctl.conf
+        sudo nano /etc/sysctl.conf
 
 Décommentez ou ajoutez cette ligne :
 
-    net.ipv4.ip_forward=1
+        net.ipv4.ip_forward=1
 
 Appliquez la modification :
 
-    sudo sysctl -p
+        sudo sysctl -p
 
 ## 🛠️ Étape 2 : Installation de Docker et Docker Compose
 
@@ -59,18 +59,18 @@ Afin d'éviter les paquets obsolètes des dépôts par défaut, il est recommand
 
 1. **Téléchargement et exécution du script officiel :**
 
-    curl -fsSL [https://get.docker.com](https://get.docker.com) -o get-docker.sh
-    sudo sh get-docker.sh
+        curl -fsSL [https://get.docker.com](https://get.docker.com) -o get-docker.sh
+        sudo sh get-docker.sh
 
 2. **Ajout de l'utilisateur au groupe Docker (Optionnel mais recommandé) :**
 
-    sudo usermod -aG docker $USER
+        sudo usermod -aG docker $USER
 
 **Note :** Déconnectez-vous puis reconnectez-vous pour que ce changement prenne effet.
 
 3. **Vérification de l'intallation :**
 
-    docker composer version
+        docker composer version
 
 ## ⚙️ Étape 3 : Installation de Mailcow
 
@@ -78,23 +78,23 @@ Afin d'éviter les paquets obsolètes des dépôts par défaut, il est recommand
 
 L'installation de Mailcow doit se faire dans le répertoire /opt/.
 
-    sudo git clone [https://github.com/mailcow/mailcow-dockerized](https://github.com/mailcow/mailcow-dockerized) /opt/mailcow-dockerized
+        sudo git clone [https://github.com/mailcow/mailcow-dockerized](https://github.com/mailcow/mailcow-dockerized) /opt/mailcow-dockerized
 
 Une fois cloné, placez-vous dans le répertoire de mailcow :
 
-    cd /opt/mailcow-dockerized
+        cd /opt/mailcow-dockerized
 
 2. **Génération du fichier de configuration :**
 
 Lancez le script de génération. Il vous demandera le FQDN de votre serveur (ex: mail.votre-domaine.com).
 
-    sudo ./generate_config.sh
+        sudo ./generate_config.sh
 
 ## 🔧 Étape 4 : Paramétrage avancé (mailcow.conf)
 
 Le fichier de configuration principal est mailcow.conf. Vous pouvez l'éditer pour ajuster les paramètres selon votre infrastructure.
 
-    sudo nano mailcow.conf
+        sudo nano mailcow.conf
 
 Paramètres fréquents à vérifier/modifier :
 
@@ -108,11 +108,11 @@ Paramètres fréquents à vérifier/modifier :
 
 1. **Téléchargement des images Docker :**
 
-    sudo docker compose pull
+        sudo docker compose pull
 
 2. **Démarrage de la stack Mailcow :**
 
-    sudo docker compose up -d
+        sudo docker compose up -d
 
 Le premier démarrage peut prendre quelques minutes le temps d'initialiser les bases de données et de générer les certificats cryptographiques.
 
@@ -170,6 +170,6 @@ Pour valider le bon fonctionnement de votre infrastructure et sa délivrabilité
 
 * Vérifiez la bonne propagation DNS avec la commande locale :
 
-    dig +short TXT _dmarc.votre-domaine.com
+        dig +short TXT _dmarc.votre-domaine.com
 
 Le résultat doit retourner exactement la chaîne configurée à l'étape 6.
