@@ -10,6 +10,12 @@ Ce guide détaille le déploiement complet d'un serveur de messagerie Mailcow su
 * **Réseau :** Une adresse IP publique fixe.
 * **DNS :** Un nom de domaine avec accès à la gestion de la zone DNS.
 
+Pour ma part, j'utilise Proxmox VE comme hyperviseur et j'ai créé une VM avec les éléments suivants :
+
+<p align="center">
+    <img src="/assests/vm-mail-specs.png" alt="Capture VM Specs">
+</p>
+
 **Note :** L'éditeur de texte utilisé dépend de vous, ici j'ai fait le choix de 'nano' car c'est le plus utilisé mais j'utilise 'vim' à titre personnel.
 
 ---
@@ -31,6 +37,8 @@ Ce guide détaille le déploiement complet d'un serveur de messagerie Mailcow su
 Définissez le FQDN (Fully Qualified Domain Name) de votre serveur mail.
 
         sudo hostnamectl set-hostname mail.votre-domaine.com
+
+''L'exemple est donné avec un FQDN puisqu'il c'est le sujet, mais il est tout à fait possible de laisser un nom d'hôte plus classique, pour ma part SRV-BBH-37005.
 
 Éditez le fichier /etc/hosts pour y lier l'IP locale/publique du serveur :
 
