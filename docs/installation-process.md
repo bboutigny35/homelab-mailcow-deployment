@@ -16,7 +16,7 @@ Pour ma part, j'utilise Proxmox VE comme hyperviseur et j'ai créé une VM avec 
     <img src="/assests/vm-mail-specs.png" alt="Capture VM Specs">
 </p>
 
-**Note :** L'éditeur de texte utilisé dépend de vous, ici j'ai fait le choix de 'nano' car c'est le plus utilisé mais j'utilise 'vim' à titre personnel.
+**NB :** L'éditeur de texte utilisé dépend de vous, ici j'ai fait le choix de 'nano' car c'est le plus utilisé mais j'utilise 'vim' à titre personnel.
 
 ---
 
@@ -28,7 +28,7 @@ Pour ma part, j'utilise Proxmox VE comme hyperviseur et j'ai créé une VM avec 
 
 2. **Installation des dépendances essentielles :**
 
-**Note :** bind9-dnsutils fournit les outils dig et nslookup, indispensables pour le diagnostic réseau et la vérification des enregistrements DNS (SPF, DKIM, DMARC).
+**NB :** bind9-dnsutils fournit les outils dig et nslookup, indispensables pour le diagnostic réseau et la vérification des enregistrements DNS (SPF, DKIM, DMARC).
 
         sudo apt install -y curl git ca-certificates software-properties-common nano bind9-dnsutils
 
@@ -38,7 +38,7 @@ Définissez le FQDN (Fully Qualified Domain Name) de votre serveur mail.
 
         sudo hostnamectl set-hostname mail.votre-domaine.com
 
-''L'exemple est donné avec un FQDN puisqu'il c'est le sujet, mais il est tout à fait possible de laisser un nom d'hôte plus classique, pour ma part SRV-BBH-37005.
+**NB :** L'exemple est donné avec un FQDN puisque c'est le sujet, mais il est tout à fait possible de laisser un nom d'hôte plus classique, pour ma part SRV-BBH-37005.
 
 Éditez le fichier /etc/hosts pour y lier l'IP locale/publique du serveur :
 
@@ -48,6 +48,8 @@ Ajoutez la ligne suivante (remplacez l'IP par celle de votre serveur) :
 
         127.0.0.1 localhost
         198.51.100.10 mail.votre-domaine.com mail
+
+**NB :** Ici aussi vous pouvez tout à fait faire le choix de conserver le nom d'hôté classique plutôt que d'indiquer votre nom de domaine.
 
 4. **Préparation du routage réseau (IP Forwarding) :**
 
@@ -76,7 +78,7 @@ Afin d'éviter les paquets obsolètes des dépôts par défaut, il est recommand
 
         sudo usermod -aG docker $USER
 
-**Note :** Déconnectez-vous puis reconnectez-vous pour que ce changement prenne effet.
+**NB :** Déconnectez-vous puis reconnectez-vous pour que ce changement prenne effet.
 
 3. **Vérification de l'intallation :**
 
@@ -106,13 +108,13 @@ Le fichier de configuration principal est mailcow.conf. Vous pouvez l'éditer po
 
         sudo nano mailcow.conf
 
+Vous pouvez consulter le fichier par défaut [ici](/configs/mailcow.conf)
+
 Paramètres fréquents à vérifier/modifier :
 
 * HTTP_PORT et HTTPS_PORT : Si vous utilisez un Reverse Proxy (comme Nginx Proxy Manager) en amont, modifiez ces ports (ex: HTTP_PORT=8080, HTTPS_PORT=8443) pour éviter les conflits.
 
 * TZ : Définissez votre fuseau horaire (ex: TZ=Europe/Paris).
-
-* SKIP_CLAMD=y : Si vous avez moins de 6 Go de RAM, il est fortement conseillé de désactiver l'antivirus ClamAV pour éviter les crashs (OOM).
 
 ## 🚀 Étape 5 : Déploiement et Démarrage
 
@@ -126,6 +128,18 @@ Paramètres fréquents à vérifier/modifier :
 
 Le premier démarrage peut prendre quelques minutes le temps d'initialiser les bases de données et de générer les certificats cryptographiques.
 
+<p align="center">
+    <img src="/assests/docker-compose-up.png" alt="Capture docker compose">
+</p>
+
+Vous pouvez ensuite vérifier que les services sont bien actifs avec la commande dédiée :
+
+    docker ps
+
+<p align="center">
+    <img src="/assests/docker-ps.png" alt="Capture docker compose">
+</p>
+
 ## 🌐 Étape 6 : Configuration via l'interface Web (DNS & Domaines)
 
 Une fois les conteneurs démarrés, accédez à l'interface d'administration via votre navigateur : https://mail.votre-domaine.com (ou l'IP du serveur).
@@ -136,13 +150,33 @@ Identifiants par défaut :
 
 * Mot de passe : moohoo (⚠️ Changez ce mot de passe immédiatement après la première connexion !)
 
+<p align="center">
+    <img src="/assests/login-mailcow.png" alt="Capture login page mailcow">
+</p>
+
+**NB :** J'ai réalisé quelques modifications des paramètres mais la page de connexion est la même, seules les images peuvent changer.
+
 1. **Ajout du domaine de messagerie**
 
-Dans le menu supérieur, allez dans Configuration > Configuration du Courrier.
+Lorsque vous vous êtes connecté, vous arrivez sur le dahsboard principal :
 
-Cliquez sur l'onglet Domaines puis sur le bouton Ajouter un domaine.
+<p align="center">
+    <img src="/assests/mailcow-home-admin.png" alt="Capture home dashboard">
+</p>
+
+Dans le menu supérieur droit, allez dans Courriel > Configuration.
+
+<p align="center">
+    <img src="/assests/mailcow-courriel-domain.png" alt="Capture courriel dashboard">
+</p>
+
+Cliquez sur l'onglet Domaines puis sur le bouton Ajouter un domaine. (Bouton vert)
 
 Entrez votre nom de domaine (ex: votre-domaine.com), définissez le quota global et validez.
+
+<p align="center">
+    <img src="/assests/mail-courriel-domain-add.png" alt="Capture add domain">
+</p>
 
 2. **Configuration des enregistrements DNS (La clé de la délivrabilité)**
 
