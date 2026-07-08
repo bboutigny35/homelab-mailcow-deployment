@@ -182,7 +182,11 @@ Entrez votre nom de domaine (ex: votre-domaine.com), définissez le quota global
 
 Pour ne pas atterrir dans les spams, votre zone DNS publique doit être rigoureusement configurée.
 
-Dans l'interface Mailcow, cliquez sur le bouton DNS à côté de votre domaine fraîchement créé. Mailcow vous affichera tous les enregistrements à créer chez votre registraire (OVH, Cloudflare, etc.).
+Dans l'interface Mailcow, cliquez sur le bouton DNS (bouton bleau à droite) à côté de votre domaine fraîchement créé. Mailcow vous affichera tous les enregistrements à créer chez votre registraire (OVH, Cloudflare, etc.).
+
+<p align="center">
+    <img src="/assests/mailcow-dns-parameters.png" alt="Capture DNS parameters">
+</p>
 
 Les enregistrements critiques à configurer :
 
@@ -198,11 +202,29 @@ Les enregistrements critiques à configurer :
 
 3. **Création des boîtes mail**
 
-Allez dans l'onglet Boîtes aux lettres.
+Allez dans l'onglet Boîtes de réception.
 
-Cliquez sur Ajouter une boîte aux lettres.
+<p align="center">
+    <img src="/assests/mailcow-courriel-mailbox.png" alt="Capture mailbox creation">
+</p>
 
-Créez les adresses souhaitées (ex: contact@votre-domaine.com).
+Cliquez sur Ajouter une boîte aux lettres.(bouton vert)
+
+<p align="center">
+    <img src="/assests/mailcow-courrier-mailbox-add.png" alt="Capture mailbox add">
+</p>
+
+Vous pouvez y renseigner un certain nombre d'éléments, comme :
+
+* L'identifiant : il s'agit de la partie située à gauche du '@' de votre adresse mail (vous n'avez pas besoin de saisir le '@votre-nom-de-domaine.com' puisque vous avez la possibilité de choisir l'un des domaines que vous aurez renseigné au préalable) ;
+
+* Le nom complet : il s'agit de l'alias afficher sur la messagerie de vos correspondants lorsque vous envoyez des mails (ex: Jean DUPONT (jean.dupont@gmail.com)) ;
+
+* Le mot de passe : vous pouvez choisir un mot de passe par défaut pour la première connexion, mais vous remarquez qu'il est possible de générer un mot de passe automatiquement, ce qui peut être pratique, mais vous pouvez aussi utiliser un logiciel externe tel que BitWarden ;
+
+* Je passe un peu sur les autres paramêtres utilisables mais n'hésitez pas à naviguer pour vous familiariser avec l'environnement.
+
+Créez les adresses souhaitées (ex: contact@votre-domaine.com)....
 
 ## 🩺 Étape 7 : Tests et Validation
 
@@ -212,8 +234,12 @@ Pour valider le bon fonctionnement de votre infrastructure et sa délivrabilité
 
 * Utilisez Mail-Tester : L'objectif est d'obtenir le score parfait de 10/10.
 
-* Vérifiez la bonne propagation DNS avec la commande locale :
+* Vérifiez la bonne propagation DNS avec la commande locale, ici l'exemple pour la DMARC :
 
         dig +short TXT _dmarc.votre-domaine.com
 
 Le résultat doit retourner exactement la chaîne configurée à l'étape 6.
+
+<p align="center">
+    <img src="/assests/mailcow-dmarc-test-dig.png" alt="Capture dmarc test">
+</p>
